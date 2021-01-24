@@ -1,0 +1,393 @@
+<?php 
+/**
+ * Alumnos Page Controller
+ * @category  Controller
+ */
+class AlumnosController extends SecureController{
+	function __construct(){
+		parent::__construct();
+		$this->tablename = "alumnos";
+	}
+	/**
+     * List page records
+     * @param $fieldname (filter record by a field) 
+     * @param $fieldvalue (filter field value)
+     * @return BaseView
+     */
+	function index($fieldname = null , $fieldvalue = null){
+		$request = $this->request;
+		$db = $this->GetModel();
+		$tablename = $this->tablename;
+		$fields = array("Id", 
+			"FEC_ALTA", 
+			"FEC_BAJA", 
+			"USUARIO", 
+			"DOCUMENTO", 
+			"NOMBRE", 
+			"APELLIDO", 
+			"DOMICILIO", 
+			"CP", 
+			"LOCALIDAD", 
+			"TELEFONO", 
+			"EMAIL", 
+			"F_NACIMIENTO", 
+			"L_NACIMIENTO", 
+			"ESC_ORIGEN");
+		$pagination = $this->get_pagination(MAX_RECORD_COUNT); // get current pagination e.g array(page_number, page_limit)
+		//search table record
+		if(!empty($request->search)){
+			$text = trim($request->search); 
+			$search_condition = "(
+				alumnos.Id LIKE ? OR 
+				alumnos.FEC_ALTA LIKE ? OR 
+				alumnos.FEC_BAJA LIKE ? OR 
+				alumnos.USUARIO LIKE ? OR 
+				alumnos.DOCUMENTO LIKE ? OR 
+				alumnos.NOMBRE LIKE ? OR 
+				alumnos.APELLIDO LIKE ? OR 
+				alumnos.DOMICILIO LIKE ? OR 
+				alumnos.CP LIKE ? OR 
+				alumnos.LOCALIDAD LIKE ? OR 
+				alumnos.TELEFONO LIKE ? OR 
+				alumnos.EMAIL LIKE ? OR 
+				alumnos.F_NACIMIENTO LIKE ? OR 
+				alumnos.L_NACIMIENTO LIKE ? OR 
+				alumnos.ESC_ORIGEN LIKE ?
+			)";
+			$search_params = array(
+				"%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%"
+			);
+			//setting search conditions
+			$db->where($search_condition, $search_params);
+			 //template to use when ajax search
+			$this->view->search_template = "alumnos/search.php";
+		}
+		if(!empty($request->orderby)){
+			$orderby = $request->orderby;
+			$ordertype = (!empty($request->ordertype) ? $request->ordertype : ORDER_TYPE);
+			$db->orderBy($orderby, $ordertype);
+		}
+		else{
+			$db->orderBy("alumnos.Id", ORDER_TYPE);
+		}
+		if($fieldname){
+			$db->where($fieldname , $fieldvalue); //filter by a single field name
+		}
+		$tc = $db->withTotalCount();
+		$records = $db->get($tablename, $pagination, $fields);
+		$records_count = count($records);
+		$total_records = intval($tc->totalCount);
+		$page_limit = $pagination[1];
+		$total_pages = ceil($total_records / $page_limit);
+		$data = new stdClass;
+		$data->records = $records;
+		$data->record_count = $records_count;
+		$data->total_records = $total_records;
+		$data->total_page = $total_pages;
+		if($db->getLastError()){
+			$this->set_page_error();
+		}
+		$page_title = $this->view->page_title = "Alumnos";
+		$this->view->report_filename = date('Y-m-d') . '-' . $page_title;
+		$this->view->report_title = $page_title;
+		$this->view->report_layout = "report_layout.php";
+		$this->view->report_paper_size = "A4";
+		$this->view->report_orientation = "portrait";
+		$this->render_view("alumnos/list.php", $data); //render the full page
+	}
+	/**
+     * View record detail 
+	 * @param $rec_id (select record by table primary key) 
+     * @param $value value (select record by value of field name(rec_id))
+     * @return BaseView
+     */
+	function view($rec_id = null, $value = null){
+		$request = $this->request;
+		$db = $this->GetModel();
+		$rec_id = $this->rec_id = urldecode($rec_id);
+		$tablename = $this->tablename;
+		$fields = array("Id", 
+			"FEC_ALTA", 
+			"FEC_BAJA", 
+			"USUARIO", 
+			"DOCUMENTO", 
+			"NOMBRE", 
+			"APELLIDO", 
+			"DOMICILIO", 
+			"CP", 
+			"LOCALIDAD", 
+			"TELEFONO", 
+			"EMAIL", 
+			"F_NACIMIENTO", 
+			"L_NACIMIENTO", 
+			"ESC_ORIGEN");
+		if($value){
+			$db->where($rec_id, urldecode($value)); //select record based on field name
+		}
+		else{
+			$db->where("alumnos.Id", $rec_id);; //select record based on primary key
+		}
+		$record = $db->getOne($tablename, $fields );
+		if($record){
+			$page_title = $this->view->page_title = "Ver";
+		$this->view->report_filename = date('Y-m-d') . '-' . $page_title;
+		$this->view->report_title = $page_title;
+		$this->view->report_layout = "report_layout.php";
+		$this->view->report_paper_size = "A4";
+		$this->view->report_orientation = "portrait";
+		}
+		else{
+			if($db->getLastError()){
+				$this->set_page_error();
+			}
+			else{
+				$this->set_page_error("Registro no encontrado");
+			}
+		}
+		return $this->render_view("alumnos/view.php", $record);
+	}
+	/**
+     * Insert new record to the database table
+	 * @param $formdata array() from $_POST
+     * @return BaseView
+     */
+	function add($formdata = null){
+		if($formdata){
+			$db = $this->GetModel();
+			$tablename = $this->tablename;
+			$request = $this->request;
+			//fillable fields
+			$fields = $this->fields = array("FEC_ALTA","FEC_BAJA","USUARIO","DOCUMENTO","NOMBRE","APELLIDO","DOMICILIO","CP","LOCALIDAD","TELEFONO","EMAIL","F_NACIMIENTO","L_NACIMIENTO","ESC_ORIGEN");
+			$postdata = $this->format_request_data($formdata);
+			$this->rules_array = array(
+				'FEC_ALTA' => 'required',
+				'FEC_BAJA' => 'required',
+				'USUARIO' => 'required|numeric',
+				'DOCUMENTO' => 'required',
+				'NOMBRE' => 'required',
+				'APELLIDO' => 'required',
+				'DOMICILIO' => 'required',
+				'CP' => 'required|numeric',
+				'LOCALIDAD' => 'required|numeric',
+				'TELEFONO' => 'required',
+				'EMAIL' => 'required|valid_email',
+				'F_NACIMIENTO' => 'required',
+				'L_NACIMIENTO' => 'required',
+				'ESC_ORIGEN' => 'required',
+			);
+			$this->sanitize_array = array(
+				'FEC_ALTA' => 'sanitize_string',
+				'FEC_BAJA' => 'sanitize_string',
+				'USUARIO' => 'sanitize_string',
+				'DOCUMENTO' => 'sanitize_string',
+				'NOMBRE' => 'sanitize_string',
+				'APELLIDO' => 'sanitize_string',
+				'DOMICILIO' => 'sanitize_string',
+				'CP' => 'sanitize_string',
+				'LOCALIDAD' => 'sanitize_string',
+				'TELEFONO' => 'sanitize_string',
+				'EMAIL' => 'sanitize_string',
+				'F_NACIMIENTO' => 'sanitize_string',
+				'L_NACIMIENTO' => 'sanitize_string',
+				'ESC_ORIGEN' => 'sanitize_string',
+			);
+			$this->filter_vals = true; //set whether to remove empty fields
+			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			if($this->validated()){
+				$rec_id = $this->rec_id = $db->insert($tablename, $modeldata);
+				if($rec_id){
+					$this->set_flash_msg("El registro se agrego correctamente", "success");
+					return	$this->redirect("alumnos");
+				}
+				else{
+					$this->set_page_error();
+				}
+			}
+		}
+		$page_title = $this->view->page_title = "Agregar nuevo";
+		$this->render_view("alumnos/add.php");
+	}
+	/**
+     * Update table record with formdata
+	 * @param $rec_id (select record by table primary key)
+	 * @param $formdata array() from $_POST
+     * @return array
+     */
+	function edit($rec_id = null, $formdata = null){
+		$request = $this->request;
+		$db = $this->GetModel();
+		$this->rec_id = $rec_id;
+		$tablename = $this->tablename;
+		 //editable fields
+		$fields = $this->fields = array("Id","FEC_ALTA","FEC_BAJA","USUARIO","DOCUMENTO","NOMBRE","APELLIDO","DOMICILIO","CP","LOCALIDAD","TELEFONO","EMAIL","F_NACIMIENTO","L_NACIMIENTO","ESC_ORIGEN");
+		if($formdata){
+			$postdata = $this->format_request_data($formdata);
+			$this->rules_array = array(
+				'FEC_ALTA' => 'required',
+				'FEC_BAJA' => 'required',
+				'USUARIO' => 'required|numeric',
+				'DOCUMENTO' => 'required',
+				'NOMBRE' => 'required',
+				'APELLIDO' => 'required',
+				'DOMICILIO' => 'required',
+				'CP' => 'required|numeric',
+				'LOCALIDAD' => 'required|numeric',
+				'TELEFONO' => 'required',
+				'EMAIL' => 'required|valid_email',
+				'F_NACIMIENTO' => 'required',
+				'L_NACIMIENTO' => 'required',
+				'ESC_ORIGEN' => 'required',
+			);
+			$this->sanitize_array = array(
+				'FEC_ALTA' => 'sanitize_string',
+				'FEC_BAJA' => 'sanitize_string',
+				'USUARIO' => 'sanitize_string',
+				'DOCUMENTO' => 'sanitize_string',
+				'NOMBRE' => 'sanitize_string',
+				'APELLIDO' => 'sanitize_string',
+				'DOMICILIO' => 'sanitize_string',
+				'CP' => 'sanitize_string',
+				'LOCALIDAD' => 'sanitize_string',
+				'TELEFONO' => 'sanitize_string',
+				'EMAIL' => 'sanitize_string',
+				'F_NACIMIENTO' => 'sanitize_string',
+				'L_NACIMIENTO' => 'sanitize_string',
+				'ESC_ORIGEN' => 'sanitize_string',
+			);
+			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			if($this->validated()){
+				$db->where("alumnos.Id", $rec_id);;
+				$bool = $db->update($tablename, $modeldata);
+				$numRows = $db->getRowCount(); //number of affected rows. 0 = no record field updated
+				if($bool && $numRows){
+					$this->set_flash_msg("El registro se actualizo correctamente", "success");
+					return $this->redirect("alumnos");
+				}
+				else{
+					if($db->getLastError()){
+						$this->set_page_error();
+					}
+					elseif(!$numRows){
+						//not an error, but no record was updated
+						$page_error = "No hay registro actualizado";
+						$this->set_page_error($page_error);
+						$this->set_flash_msg($page_error, "warning");
+						return	$this->redirect("alumnos");
+					}
+				}
+			}
+		}
+		$db->where("alumnos.Id", $rec_id);;
+		$data = $db->getOne($tablename, $fields);
+		$page_title = $this->view->page_title = "Editar";
+		if(!$data){
+			$this->set_page_error();
+		}
+		return $this->render_view("alumnos/edit.php", $data);
+	}
+	/**
+     * Update single field
+	 * @param $rec_id (select record by table primary key)
+	 * @param $formdata array() from $_POST
+     * @return array
+     */
+	function editfield($rec_id = null, $formdata = null){
+		$db = $this->GetModel();
+		$this->rec_id = $rec_id;
+		$tablename = $this->tablename;
+		//editable fields
+		$fields = $this->fields = array("Id","FEC_ALTA","FEC_BAJA","USUARIO","DOCUMENTO","NOMBRE","APELLIDO","DOMICILIO","CP","LOCALIDAD","TELEFONO","EMAIL","F_NACIMIENTO","L_NACIMIENTO","ESC_ORIGEN");
+		$page_error = null;
+		if($formdata){
+			$postdata = array();
+			$fieldname = $formdata['name'];
+			$fieldvalue = $formdata['value'];
+			$postdata[$fieldname] = $fieldvalue;
+			$postdata = $this->format_request_data($postdata);
+			$this->rules_array = array(
+				'FEC_ALTA' => 'required',
+				'FEC_BAJA' => 'required',
+				'USUARIO' => 'required|numeric',
+				'DOCUMENTO' => 'required',
+				'NOMBRE' => 'required',
+				'APELLIDO' => 'required',
+				'DOMICILIO' => 'required',
+				'CP' => 'required|numeric',
+				'LOCALIDAD' => 'required|numeric',
+				'TELEFONO' => 'required',
+				'EMAIL' => 'required|valid_email',
+				'F_NACIMIENTO' => 'required',
+				'L_NACIMIENTO' => 'required',
+				'ESC_ORIGEN' => 'required',
+			);
+			$this->sanitize_array = array(
+				'FEC_ALTA' => 'sanitize_string',
+				'FEC_BAJA' => 'sanitize_string',
+				'USUARIO' => 'sanitize_string',
+				'DOCUMENTO' => 'sanitize_string',
+				'NOMBRE' => 'sanitize_string',
+				'APELLIDO' => 'sanitize_string',
+				'DOMICILIO' => 'sanitize_string',
+				'CP' => 'sanitize_string',
+				'LOCALIDAD' => 'sanitize_string',
+				'TELEFONO' => 'sanitize_string',
+				'EMAIL' => 'sanitize_string',
+				'F_NACIMIENTO' => 'sanitize_string',
+				'L_NACIMIENTO' => 'sanitize_string',
+				'ESC_ORIGEN' => 'sanitize_string',
+			);
+			$this->filter_rules = true; //filter validation rules by excluding fields not in the formdata
+			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			if($this->validated()){
+				$db->where("alumnos.Id", $rec_id);;
+				$bool = $db->update($tablename, $modeldata);
+				$numRows = $db->getRowCount();
+				if($bool && $numRows){
+					return render_json(
+						array(
+							'num_rows' =>$numRows,
+							'rec_id' =>$rec_id,
+						)
+					);
+				}
+				else{
+					if($db->getLastError()){
+						$page_error = $db->getLastError();
+					}
+					elseif(!$numRows){
+						$page_error = "No hay registro actualizado";
+					}
+					render_error($page_error);
+				}
+			}
+			else{
+				render_error($this->view->page_error);
+			}
+		}
+		return null;
+	}
+	/**
+     * Delete record from the database
+	 * Support multi delete by separating record id by comma.
+     * @return BaseView
+     */
+	function delete($rec_id = null){
+		Csrf::cross_check();
+		$request = $this->request;
+		$db = $this->GetModel();
+		$tablename = $this->tablename;
+		$this->rec_id = $rec_id;
+		//form multiple delete, split record id separated by comma into array
+		$arr_rec_id = array_map('trim', explode(",", $rec_id));
+		$db->where("alumnos.Id", $arr_rec_id, "in");
+		$bool = $db->delete($tablename);
+		if($bool){
+			$this->set_flash_msg("El registro se borro con exito", "success");
+		}
+		elseif($db->getLastError()){
+			$page_error = $db->getLastError();
+			$this->set_flash_msg($page_error, "danger");
+		}
+		return	$this->redirect("alumnos");
+	}
+}

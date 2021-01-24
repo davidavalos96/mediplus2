@@ -1,0 +1,7 @@
+{
+    "require": {
+        "dompdf/dompdf": "^0.8.3",
+        "spipu/html2pdf": "^5.2",
+        "ivopetkov/html5-dom-document-php": "2.*"
+    }
+}
