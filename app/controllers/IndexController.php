@@ -8,7 +8,7 @@ class IndexController extends BaseController{
 		parent::__construct(); 
 		$this->tablename = "usuarios";
 		$this->soft_delete = true;
-		$this->delete_field_name =$this->tablename.".is_deleted"; 
+		$this->delete_field_name = "is_deleted";
 		$this->delete_field_value = "1";
 	}
 	/**
@@ -30,11 +30,11 @@ class IndexController extends BaseController{
 		$tablename = $this->tablename;
 		$user = $db->getOne($tablename);
 		if(!empty($user)){
-			//Verify User Password Text With DB Password Hash Value.
-			//Uses PHP password_verify() function with default options
-			$password_hash = $user['CLAVE'];
+			//Verify User Password hash With DB Password Hash Value. 
+			$password_hash = hash( 'MD5' , $password_text );
 			$this->modeldata['CLAVE'] = $password_hash; //update the modeldata with the password hash
-			if(password_verify($password_text,$password_hash)){
+			$user_password_hashed = $user['CLAVE']; //
+			if( $user_password_hashed == $password_hash ){
         		unset($user['CLAVE']); //Remove user password. No need to store it in the session
 				set_session("user_data", $user); // Set active user data in a sessions
 				//if Remeber Me, Set Cookie
@@ -131,7 +131,7 @@ class IndexController extends BaseController{
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
 			$password_text = $modeldata['CLAVE'];
 			//update modeldata with the password hash
-			$modeldata['CLAVE'] = $this->modeldata['CLAVE'] = password_hash($password_text , PASSWORD_DEFAULT);
+			$modeldata['CLAVE'] = $this->modeldata['CLAVE'] = hash( 'md5' , $password_text );
 			//Check if Duplicate Record Already Exit In The Database
 			$db->where("USUARIO", $modeldata['USUARIO']);
 			if($db->has($tablename)){

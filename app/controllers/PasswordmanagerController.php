@@ -4,7 +4,7 @@ class PasswordmanagerController extends BaseController{
 		parent::__construct();
 		$this->tablename = "usuarios";
 		$this->soft_delete = true;
-		$this->delete_field_name =$this->tablename.".is_deleted"; 
+		$this->delete_field_name = "is_deleted";
 		$this->delete_field_value = "1";
 	}
 	function index(){
@@ -70,7 +70,7 @@ class PasswordmanagerController extends BaseController{
 						$password = $_POST["password"]; 
 						$cpassword = $_POST["cpassword"];
 						if($password == $cpassword){
-							$new_password_hash = password_hash($password , PASSWORD_DEFAULT);
+							$new_password_hash = hash('MD5' , $password);
 							$new_date_to_expire = format_date("3 months");
 							$new_password_data = array(
 								"CLAVE" => $new_password_hash,

@@ -2,7 +2,7 @@
         $page_id = null;
         $comp_model = new SharedController;
         ?>
-        <div  class=" py-5">
+        <div  class=" py-5 fondo-Login">
             <div class="container">
                 <div class="row ">
                     <div class="col-md-10 bg-primary login-card-holder comp-grid">
@@ -12,7 +12,7 @@
                                     <div class="col-sm-8 svg comp-grid">
                                     </div>
                                     <div class="col-sm-4 bg-white comp-grid">
-                                        <h4 class="mt-4 mb-3 bold px-3">Bienvenid@</h4>
+                                        <h4 class="mt-4 mb-3 bold px-3">Bienvenidos</h4>
                                         <h6 class="mt-4 mb-3 bold px-3">Ingrese usuario y contraseña para iniciar sesion</h6>
                                         <?php $this :: display_page_errors(); ?>
                                         
@@ -95,6 +95,10 @@
                                 padding:10px;
                                 border-width:0 0 1px 0;
                                 font-size:17px;
+                                }
+                                .fondo-Login{
+                                    background:url('<?php echo SITE_ADDR."assets/images/fondo.png"?>');
+                                    background-size:cover;
                                 }
                             </style>
                             <!-- .js script, function is to disfigur PHPRad default login button. so that we can style proper -->

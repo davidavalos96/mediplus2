@@ -73,7 +73,7 @@ $show_pagination = $this->show_pagination;
                             }
                             ?>
                         </div>
-                        <div  class=" animated fadeIn page-content " style="display:none;">
+                        <div  class=" animated fadeIn page-content" style="display:none;">
                             <div id="turnos-agendapaciente-records">
                                 <div id="page-report-body" class="table-responsive">
                                     <table class="table  table-striped table-sm text-left">
@@ -235,7 +235,7 @@ $show_pagination = $this->show_pagination;
                                                     <div class="card-header h4 h4">Paciente</div>
                                                     <div class="p-2">
                                                         <select   name="turnos_IDPACIENTE" class="form-control custom ">
-                                                            <option value="12345678908765324563">Seleccione un Paciente</option>
+                                                            <option value="3839208392108409214">Seleccione un Paciente</option>
                                                             <?php 
                                                             $turnos_IDPACIENTE_options = $comp_model -> turnos_turnosIDPACIENTE_option_list();
                                                             if(!empty($turnos_IDPACIENTE_options)){
@@ -304,7 +304,7 @@ $show_pagination = $this->show_pagination;
                                                     eventClick: function(calEvent, jsEvent, view) {
                                                     //example: http://www.mikesmithdev.com/blog/fullcalendar-event-details-with-bootstrap-modal/
                                                     $('.modal-body').load(urledit+calEvent.id,function(result){
-                                                    $('#main-page-modal').modal({show:true});
+                                                    $('#'+modalid).modal({show:true});
                                                     });
                                                     //$(this).fullCalendar("rerenderEvents");
                                                     //THIS DOES NOT WORK.  When click, right scroll bar disappears
@@ -356,7 +356,6 @@ $show_pagination = $this->show_pagination;
                                                         }
                                                         }); 
                                                         $('#filtro').click(function(){
-                                                            
                                                         $("#Calendar<?=$calendarName;?><?=$calendarName;?>").fullCalendar("refetchEvents");
                                                         });
                                                         $(".modal").on("hidden.bs.modal", function () {

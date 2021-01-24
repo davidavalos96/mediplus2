@@ -8,7 +8,7 @@ class ProvinciasController extends SecureController{
 		parent::__construct();
 		$this->tablename = "provincias";
 		$this->soft_delete = true;
-		$this->delete_field_name =$this->tablename.".is_deleted"; 
+		$this->delete_field_name = "is_deleted";
 		$this->delete_field_value = "1";
 	}
 	/**
