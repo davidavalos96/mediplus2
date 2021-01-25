@@ -8,7 +8,7 @@ class EvolucionesController extends SecureController{
 		parent::__construct();
 		$this->tablename = "evoluciones";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**
@@ -278,6 +278,9 @@ class EvolucionesController extends SecureController{
 			$this->filter_vals = true; //set whether to remove empty fields
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
 			if($this->validated()){
+		# Statement to execute before adding record
+		$db->rawQuery("UPDATE historiaclinica SET ultima_modif=NOW(),usuario=".USER_ID." WHERE id=".strval(ID_PACIENTE));
+		# End of before add statement
 				$rec_id = $this->rec_id = $db->insert($tablename, $modeldata);
 				if($rec_id){
 					$this->set_flash_msg("El registro se agrego correctamente", "success");
@@ -331,6 +334,9 @@ class EvolucionesController extends SecureController{
 			);
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
 			if($this->validated()){
+		# Statement to execute after adding record
+		$db->rawQuery("UPDATE historiaclinica SET ultima_modif=NOW(),usuario=".USER_ID." WHERE id=".strval(ID_PACIENTE));
+		# End of before update statement
 		$db->where("evoluciones.usuario", get_active_user('idUSUARIO') );
 				$db->where("evoluciones.id", $rec_id);;
 				$bool = $db->update($tablename, $modeldata);
@@ -374,6 +380,9 @@ class EvolucionesController extends SecureController{
 		$this->rec_id = $rec_id;
 		//form multiple delete, split record id separated by comma into array
 		$arr_rec_id = array_map('trim', explode(",", $rec_id));
+	#Statement to execute before delete record
+	$db->rawQuery("UPDATE historiaclinica SET ultima_modif=NOW(),usuario=".USER_ID." WHERE id=".strval(ID_PACIENTE));
+	# End of before delete statement
 		$db->where("evoluciones.id", $arr_rec_id, "in");
 		$db->where("evoluciones.usuario", get_active_user('idUSUARIO') );
 		$modeldata = array(
@@ -422,6 +431,9 @@ class EvolucionesController extends SecureController{
 			);
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
 			if($this->validated()){
+		# Statement to execute after adding record
+		$db->rawQuery("UPDATE historiaclinica SET ultima_modif=NOW(),usuario=".USER_ID." WHERE id=".strval(ID_PACIENTE));
+		# End of before update statement
 		$db->where("evoluciones.usuario", get_active_user('idUSUARIO') );
 				$db->where("evoluciones.id", $rec_id);;
 				$bool = $db->update($tablename, $modeldata);
@@ -511,5 +523,60 @@ class EvolucionesController extends SecureController{
 			}
 		}
 		return $this->render_view("evoluciones/reporte.php", $record);
+	}
+	/**
+     * Insert new record to the database table
+	 * @param $formdata array() from $_POST
+     * @return BaseView
+     */
+	function agregar_evolucion_terapeuta($formdata = null){
+		if($formdata){
+			$db = $this->GetModel();
+			$tablename = $this->tablename;
+			$request = $this->request;
+			//fillable fields
+			$fields = $this->fields = array("fecha","tratamiento","tipo_evolucion","profesional","paciente","evolucion","usuario","via_comunicacion","otra_via","firma");
+			$postdata = $this->format_request_data($formdata);
+			$this->rules_array = array(
+				'fecha' => 'required',
+				'tratamiento' => 'required|numeric',
+				'tipo_evolucion' => 'required',
+				'profesional' => 'required',
+				'paciente' => 'required',
+				'evolucion' => 'required',
+				'usuario' => 'required',
+				'via_comunicacion' => 'required',
+				'firma' => 'required',
+			);
+			$this->sanitize_array = array(
+				'fecha' => 'sanitize_string',
+				'tratamiento' => 'sanitize_string',
+				'tipo_evolucion' => 'sanitize_string',
+				'profesional' => 'sanitize_string',
+				'paciente' => 'sanitize_string',
+				'evolucion' => 'sanitize_string',
+				'usuario' => 'sanitize_string',
+				'via_comunicacion' => 'sanitize_string',
+				'otra_via' => 'sanitize_string',
+				'firma' => 'sanitize_string',
+			);
+			$this->filter_vals = true; //set whether to remove empty fields
+			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			if($this->validated()){
+		# Statement to execute before adding record
+		$db->rawQuery("UPDATE historiaclinica SET ultima_modif=NOW(),usuario=".USER_ID." WHERE id=".strval(ID_PACIENTE));
+		# End of before add statement
+				$rec_id = $this->rec_id = $db->insert($tablename, $modeldata);
+				if($rec_id){
+					$this->set_flash_msg("El registro se agrego correctamente", "success");
+					return	$this->redirect("evoluciones/edit/$rec_id");
+				}
+				else{
+					$this->set_page_error();
+				}
+			}
+		}
+		$page_title = $this->view->page_title = "Agregar nuevo";
+		$this->render_view("evoluciones/agregar_evolucion_terapeuta.php");
 	}
 }

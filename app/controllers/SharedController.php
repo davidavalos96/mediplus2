@@ -200,18 +200,6 @@ class SharedController extends BaseController{
 	}
 
 	/**
-     * usuarios_profesional_option_list Model Action
-     * @return array
-     */
-	function usuarios_profesional_option_list(){
-		$db = $this->GetModel();
-		$sqltext = "SELECT  DISTINCT ID AS value,NOMBAPEPRO AS label FROM profesionales ORDER BY NOMBAPEPRO ASC";
-		$queryparams = null;
-		$arr = $db->rawQuery($sqltext, $queryparams);
-		return $arr;
-	}
-
-	/**
      * profesionales_BARRIO_option_list Model Action
      * @return array
      */
@@ -547,6 +535,30 @@ class SharedController extends BaseController{
 		$db = $this->GetModel();
 		$sqltext = "SELECT  DISTINCT ID AS value,NOMBAPEPRO AS label FROM v_profesionales_tratamiento WHERE tratamiento= ? ORDER BY NOMBAPEPRO ASC" ;
 		$queryparams = array($lookup_tratamiento);
+		$arr = $db->rawQuery($sqltext, $queryparams);
+		return $arr;
+	}
+
+	/**
+     * evoluciones_profesional_option_list_2 Model Action
+     * @return array
+     */
+	function evoluciones_profesional_option_list_2($lookup_tratamiento){
+		$db = $this->GetModel();
+		$sqltext = "SELECT  DISTINCT ID AS value,NOMBAPEPRO AS label FROM v_profesionales_tratamiento WHERE tratamiento= ? AND ID=? ORDER BY NOMBAPEPRO ASC"  ;
+		$queryparams = array($lookup_tratamiento,ID_PROFESIONAL);
+		$arr = $db->rawQuery($sqltext, $queryparams);
+		return $arr;
+	}
+
+	/**
+     * evoluciones_via_comunicacion_option_list_2 Model Action
+     * @return array
+     */
+	function evoluciones_via_comunicacion_option_list_2($lookup_profesional){
+		$db = $this->GetModel();
+		$sqltext = "SELECT  DISTINCT id AS value,descripcion AS label FROM v_firma WHERE profesional= ? ORDER BY descripcion ASC"  ;
+		$queryparams = array($lookup_profesional);
 		$arr = $db->rawQuery($sqltext, $queryparams);
 		return $arr;
 	}

@@ -76,62 +76,33 @@ $show_export_btn = $this->show_export_btn;
                                     </tr>
                                     <tr  class="td-EMAIL">
                                         <th class="title"> Email: </th>
-                                        <td class="value"> <?php echo $data['EMAIL']; ?></td>
+                                        <td class="value">
+                                            <span <?php if($can_edit){ ?> data-value="<?php echo $data['EMAIL']; ?>" 
+                                                data-pk="<?php echo $data['idUSUARIO'] ?>" 
+                                                data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
+                                                data-name="EMAIL" 
+                                                data-title="Escribir  Email" 
+                                                data-placement="left" 
+                                                data-toggle="click" 
+                                                data-type="email" 
+                                                data-mode="popover" 
+                                                data-showbuttons="left" 
+                                                class="is-editable" <?php } ?>>
+                                                <?php echo $data['EMAIL']; ?> 
+                                            </span>
+                                        </td>
                                     </tr>
                                     <tr  class="td-user_role_id">
                                         <th class="title"> User Role Id: </th>
-                                        <td class="value">
-                                            <span <?php if($can_edit){ ?> data-source='<?php echo json_encode_quote(Menu :: $user_role_id); ?>' 
-                                                data-value="<?php echo $data['user_role_id']; ?>" 
-                                                data-pk="<?php echo $data['idUSUARIO'] ?>" 
-                                                data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
-                                                data-name="user_role_id" 
-                                                data-title="Seleccione un valor" 
-                                                data-placement="left" 
-                                                data-toggle="click" 
-                                                data-type="select" 
-                                                data-mode="popover" 
-                                                data-showbuttons="left" 
-                                                class="is-editable" <?php } ?>>
-                                                <?php echo $data['user_role_id']; ?> 
-                                            </span>
-                                        </td>
+                                        <td class="value"> <?php echo $data['user_role_id']; ?></td>
                                     </tr>
                                     <tr  class="td-profesional">
                                         <th class="title"> Profesional: </th>
-                                        <td class="value">
-                                            <span <?php if($can_edit){ ?> data-value="<?php echo $data['profesional']; ?>" 
-                                                data-pk="<?php echo $data['idUSUARIO'] ?>" 
-                                                data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
-                                                data-name="profesional" 
-                                                data-title="Escribir  Profesional" 
-                                                data-placement="left" 
-                                                data-toggle="click" 
-                                                data-type="number" 
-                                                data-mode="popover" 
-                                                data-showbuttons="left" 
-                                                class="is-editable" <?php } ?>>
-                                                <?php echo $data['profesional']; ?> 
-                                            </span>
-                                        </td>
+                                        <td class="value"> <?php echo $data['profesional']; ?></td>
                                     </tr>
                                     <tr  class="td-paciente">
                                         <th class="title"> Paciente: </th>
-                                        <td class="value">
-                                            <span <?php if($can_edit){ ?> data-value="<?php echo $data['paciente']; ?>" 
-                                                data-pk="<?php echo $data['idUSUARIO'] ?>" 
-                                                data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
-                                                data-name="paciente" 
-                                                data-title="Escribir  Paciente" 
-                                                data-placement="left" 
-                                                data-toggle="click" 
-                                                data-type="number" 
-                                                data-mode="popover" 
-                                                data-showbuttons="left" 
-                                                class="is-editable" <?php } ?>>
-                                                <?php echo $data['paciente']; ?> 
-                                            </span>
-                                        </td>
+                                        <td class="value"> <?php echo $data['paciente']; ?></td>
                                     </tr>
                                 </tbody>
                                 <!-- Table Body End -->

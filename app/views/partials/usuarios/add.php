@@ -78,14 +78,14 @@ $redirect_to = $this->redirect_to;
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input id="ctrl-CLAVE"  value="<?php  echo $this->set_field_value('CLAVE',""); ?>" type="password" placeholder="Escribir  Clave" maxlength="255"  required="" name="CLAVE"  class="form-control  password password-strength" />
+                                                    <input id="ctrl-CLAVE"  value="<?php  echo $this->set_field_value('CLAVE',"  "); ?>" type="password" placeholder="Escriba su clave de acceso" maxlength="255" minlength="4"  required="" name="CLAVE"  class="form-control  password password-strength" />
                                                         <div class="input-group-append cursor-pointer btn-toggle-password">
                                                             <span class="input-group-text"><i class="fa fa-eye"></i></span>
                                                         </div>
                                                     </div>
                                                     <div class="password-strength-msg">
                                                         <small class="font-weight-bold">Debería contener</small>
-                                                        <small class="length chip">6 caracteres min</small>
+                                                        <small class="length chip">4 caracteres min</small>
                                                         <small class="caps chip">Letra mayúscula</small>
                                                         <small class="number chip">Número</small>
                                                         <small class="special chip">Símbolo</small>
@@ -137,71 +137,18 @@ $redirect_to = $this->redirect_to;
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group ">
-                                                    <div class="row">
-                                                        <div class="col-sm-4">
-                                                            <label class="control-label" for="user_role_id">User Role Id <span class="text-danger">*</span></label>
-                                                        </div>
-                                                        <div class="col-sm-8">
-                                                            <div class="">
-                                                                <select required=""  id="ctrl-user_role_id" name="user_role_id"  placeholder="Seleccione un valor"    class="custom-select" >
-                                                                    <option value="">Seleccione un valor</option>
-                                                                    <?php
-                                                                    $user_role_id_options = Menu :: $user_role_id;
-                                                                    if(!empty($user_role_id_options)){
-                                                                    foreach($user_role_id_options as $option){
-                                                                    $value = $option['value'];
-                                                                    $label = $option['label'];
-                                                                    $selected = $this->set_field_selected('user_role_id', $value, "");
-                                                                    ?>
-                                                                    <option <?php echo $selected ?> value="<?php echo $value ?>">
-                                                                        <?php echo $label ?>
-                                                                    </option>                                   
-                                                                    <?php
-                                                                    }
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group ">
-                                                    <div class="row">
-                                                        <div class="col-sm-4">
-                                                            <label class="control-label" for="profesional">Profesional <span class="text-danger">*</span></label>
-                                                        </div>
-                                                        <div class="col-sm-8">
-                                                            <div class="">
-                                                                <input id="ctrl-profesional"  value="<?php  echo $this->set_field_value('profesional',""); ?>" type="number" placeholder="Escribir  Profesional" step="1"  required="" name="profesional"  class="form-control " />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group ">
-                                                        <div class="row">
-                                                            <div class="col-sm-4">
-                                                                <label class="control-label" for="paciente">Paciente <span class="text-danger">*</span></label>
-                                                            </div>
-                                                            <div class="col-sm-8">
-                                                                <div class="">
-                                                                    <input id="ctrl-paciente"  value="<?php  echo $this->set_field_value('paciente',""); ?>" type="number" placeholder="Escribir  Paciente" step="1"  required="" name="paciente"  class="form-control " />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-submit-btn-holder text-center mt-3">
-                                                        <div class="form-ajax-status"></div>
-                                                        <button class="btn btn-primary" type="submit">
-                                                            Entregar
-                                                            <i class="fa fa-send"></i>
-                                                        </button>
-                                                    </div>
-                                                </form>
                                             </div>
-                                        </div>
+                                            <div class="form-group form-submit-btn-holder text-center mt-3">
+                                                <div class="form-ajax-status"></div>
+                                                <button class="btn btn-primary" type="submit">
+                                                    Entregar
+                                                    <i class="fa fa-send"></i>
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
+                    </div>
+                </section>

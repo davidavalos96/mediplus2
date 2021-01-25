@@ -8,7 +8,7 @@ class AccountController extends SecureController{
 		parent::__construct(); 
 		$this->tablename = "usuarios";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**
@@ -22,10 +22,7 @@ class AccountController extends SecureController{
 		$tablename = $this->tablename;
 		$fields = array("idUSUARIO", 
 			"USUARIO", 
-			"EMAIL", 
-			"user_role_id", 
-			"profesional", 
-			"paciente");
+			"EMAIL");
 		$user = $db->getOne($tablename , $fields);
 		if(!empty($user)){
 			$page_title = $this->view->page_title = "Mi cuenta";
@@ -47,27 +44,39 @@ class AccountController extends SecureController{
 		$rec_id = $this->rec_id = USER_ID;
 		$tablename = $this->tablename;
 		 //editable fields
-		$fields = $this->fields = array("idUSUARIO","USUARIO","user_role_id","profesional","paciente");
+		$fields = $this->fields = array("idUSUARIO","CLAVE","USUARIO","EMAIL");
 		if($formdata){
 			$postdata = $this->format_request_data($formdata);
+			$cpassword = $postdata['confirm_password'];
+			$password = $postdata['CLAVE'];
+			if($cpassword != $password){
+				$this->view->page_error[] = "La confirmación de su contraseña no es consistente";
+			}
 			$this->rules_array = array(
+				'CLAVE' => 'required',
 				'USUARIO' => 'required',
-				'user_role_id' => 'required',
-				'profesional' => 'required|numeric',
-				'paciente' => 'required|numeric',
+				'EMAIL' => 'required|valid_email',
 			);
 			$this->sanitize_array = array(
 				'USUARIO' => 'sanitize_string',
-				'user_role_id' => 'sanitize_string',
-				'profesional' => 'sanitize_string',
-				'paciente' => 'sanitize_string',
+				'EMAIL' => 'sanitize_string',
 			);
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			$password_text = $modeldata['CLAVE'];
+			//update modeldata with the password hash
+			$modeldata['CLAVE'] = $this->modeldata['CLAVE'] = hash( 'md5' , $password_text );
 			//Check if Duplicate Record Already Exit In The Database
 			if(isset($modeldata['USUARIO'])){
 				$db->where("USUARIO", $modeldata['USUARIO'])->where("idUSUARIO", $rec_id, "!=");
 				if($db->has($tablename)){
 					$this->view->page_error[] = $modeldata['USUARIO']." ¡Ya existe!";
+				}
+			}
+			//Check if Duplicate Record Already Exit In The Database
+			if(isset($modeldata['EMAIL'])){
+				$db->where("EMAIL", $modeldata['EMAIL'])->where("idUSUARIO", $rec_id, "!=");
+				if($db->has($tablename)){
+					$this->view->page_error[] = $modeldata['EMAIL']." ¡Ya existe!";
 				}
 			} 
 			if($this->validated()){

@@ -8,7 +8,7 @@ class IndexController extends BaseController{
 		parent::__construct(); 
 		$this->tablename = "usuarios";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**
@@ -94,67 +94,6 @@ class IndexController extends BaseController{
 			$this->set_page_error("Solicitud no válida");
 			$this->render_view("index/login.php");
 		}
-	}
-	/**
-     * Insert new record into the user table
-	 * @param $formdata array from $_POST
-     * @return BaseView
-     */
-	function register($formdata = null){
-		if($formdata){
-			$request = $this->request;
-			$db = $this->GetModel();
-			$tablename = $this->tablename;
-			$fields = $this->fields = array("NOMBRE","CLAVE","USUARIO","EMAIL","user_role_id","profesional"); //registration fields
-			$postdata = $this->format_request_data($formdata);
-			$cpassword = $postdata['confirm_password'];
-			$password = $postdata['CLAVE'];
-			if($cpassword != $password){
-				$this->view->page_error[] = "La confirmación de su contraseña no es consistente";
-			}
-			$this->rules_array = array(
-				'NOMBRE' => 'required',
-				'CLAVE' => 'required',
-				'USUARIO' => 'required',
-				'EMAIL' => 'required|valid_email',
-				'user_role_id' => 'required',
-				'profesional' => 'required',
-			);
-			$this->sanitize_array = array(
-				'NOMBRE' => 'sanitize_string',
-				'USUARIO' => 'sanitize_string',
-				'EMAIL' => 'sanitize_string',
-				'user_role_id' => 'sanitize_string',
-				'profesional' => 'sanitize_string',
-			);
-			$this->filter_vals = true; //set whether to remove empty fields
-			$modeldata = $this->modeldata = $this->validate_form($postdata);
-			$password_text = $modeldata['CLAVE'];
-			//update modeldata with the password hash
-			$modeldata['CLAVE'] = $this->modeldata['CLAVE'] = hash( 'md5' , $password_text );
-			//Check if Duplicate Record Already Exit In The Database
-			$db->where("USUARIO", $modeldata['USUARIO']);
-			if($db->has($tablename)){
-				$this->view->page_error[] = $modeldata['USUARIO']." ¡Ya existe!";
-			}
-			//Check if Duplicate Record Already Exit In The Database
-			$db->where("EMAIL", $modeldata['EMAIL']);
-			if($db->has($tablename)){
-				$this->view->page_error[] = $modeldata['EMAIL']." ¡Ya existe!";
-			}
-			if($this->validated()){
-				$rec_id = $this->rec_id = $db->insert($tablename, $modeldata);
-				if($rec_id){
-					$this->login_user($modeldata['EMAIL'] , $password_text);
-					return;
-				}
-				else{
-					$this->set_page_error();
-				}
-			}
-		}
-		$page_title = $this->view->page_title = "Agregar nuevo";
-		return $this->render_view("index/register.php");
 	}
 	/**
      * Logout Action

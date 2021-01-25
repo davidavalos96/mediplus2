@@ -5,7 +5,7 @@
 <div class="container">
 	<div class="bg-light p-4">
 		<h1 class="text-danger bold">Error 500 </h1>
-		<p class=" bold">Server Error</p>
+		<p class=" bold">Ocurrio un error del sistema, por favor comuniquese con el programador</p>
 	</div>
 	<?php 
 		if(DEVELOPMENT_MODE){

@@ -264,28 +264,6 @@ class Menu{
 			"label" => "CUIT", 
 		),);
 		
-			public static $user_role_id = array(
-		array(
-			"value" => "Administrator", 
-			"label" => "Administrator", 
-		),
-		array(
-			"value" => "User", 
-			"label" => "User", 
-		),
-		array(
-			"value" => "Terapeuta", 
-			"label" => "Terapeuta", 
-		),
-		array(
-			"value" => "Recepcion", 
-			"label" => "Recepcion", 
-		),
-		array(
-			"value" => "Administracion", 
-			"label" => "Administracion", 
-		),);
-		
 			public static $TIPODOCPRO = array(
 		array(
 			"value" => "DNI", 

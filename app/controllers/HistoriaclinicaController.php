@@ -8,7 +8,7 @@ class HistoriaclinicaController extends SecureController{
 		parent::__construct();
 		$this->tablename = "historiaclinica";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**
@@ -22,11 +22,11 @@ class HistoriaclinicaController extends SecureController{
 		$db = $this->GetModel();
 		$tablename = $this->tablename;
 		$fields = array("historiaclinica.id", 
+			"pacientes.NOMBAPEPAC AS pacientes_NOMBAPEPAC", 
 			"pacientes.NUMDOCPAC AS pacientes_NUMDOCPAC", 
 			"pacientes.FECHANACPAC AS pacientes_FECHANACPAC", 
-			"pacientes.NOMBAPEPAC AS pacientes_NOMBAPEPAC", 
 			"historiaclinica.ultima_modif", 
-			"historiaclinica.usuario");
+			"usuarios.NOMBRE AS usuarios_NOMBRE");
 		$pagination = $this->get_pagination(MAX_RECORD_COUNT); // get current pagination e.g array(page_number, page_limit)
 		//search table record
 		if(!empty($request->search)){
@@ -34,12 +34,15 @@ class HistoriaclinicaController extends SecureController{
 			$search_condition = "(
 				historiaclinica.id LIKE ? OR 
 				historiaclinica.paciente LIKE ? OR 
-				pacientes.idPaciente LIKE ? OR 
+				historiaclinica.usuario LIKE ? OR 
+				historiaclinica.date_deleted LIKE ? OR 
+				historiaclinica.is_deleted LIKE ? OR 
+				pacientes.NOMBAPEPAC LIKE ? OR 
 				pacientes.NUMDOCPAC LIKE ? OR 
 				pacientes.FECHANACPAC LIKE ? OR 
-				pacientes.FECHACERTVTO LIKE ? OR 
-				pacientes.NOMBAPEPAC LIKE ? OR 
 				historiaclinica.ultima_modif LIKE ? OR 
+				pacientes.idPaciente LIKE ? OR 
+				pacientes.FECHACERTVTO LIKE ? OR 
 				pacientes.COORDINADOR LIKE ? OR 
 				pacientes.COBERTURA LIKE ? OR 
 				pacientes.PLANOBRASOC LIKE ? OR 
@@ -52,12 +55,21 @@ class HistoriaclinicaController extends SecureController{
 				pacientes.DIAGNOSTICO LIKE ? OR 
 				pacientes.MEDICODERIV LIKE ? OR 
 				pacientes.ESTADOPACIENTE LIKE ? OR 
-				historiaclinica.usuario LIKE ? OR 
-				historiaclinica.date_deleted LIKE ? OR 
-				historiaclinica.is_deleted LIKE ?
+				pacientes.date_deleted LIKE ? OR 
+				pacientes.is_deleted LIKE ? OR 
+				usuarios.idUSUARIO LIKE ? OR 
+				usuarios.NOMBRE LIKE ? OR 
+				usuarios.CLAVE LIKE ? OR 
+				usuarios.USUARIO LIKE ? OR 
+				usuarios.EMAIL LIKE ? OR 
+				usuarios.user_role_id LIKE ? OR 
+				usuarios.profesional LIKE ? OR 
+				usuarios.paciente LIKE ? OR 
+				usuarios.date_deleted LIKE ? OR 
+				usuarios.is_deleted LIKE ?
 			)";
 			$search_params = array(
-				"%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%"
+				"%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%","%$text%"
 			);
 			//setting search conditions
 			$db->where($search_condition, $search_params);
@@ -65,6 +77,7 @@ class HistoriaclinicaController extends SecureController{
 			$this->view->search_template = "historiaclinica/search.php";
 		}
 		$db->join("pacientes", "historiaclinica.paciente = pacientes.idPaciente", "INNER");
+		$db->join("usuarios", "historiaclinica.usuario = usuarios.idUSUARIO", "INNER");
 		if(!empty($request->orderby)){
 			$orderby = $request->orderby;
 			$ordertype = (!empty($request->ordertype) ? $request->ordertype : ORDER_TYPE);
@@ -82,6 +95,12 @@ class HistoriaclinicaController extends SecureController{
 		$total_records = intval($tc->totalCount);
 		$page_limit = $pagination[1];
 		$total_pages = ceil($total_records / $page_limit);
+		if(	!empty($records)){
+			foreach($records as &$record){
+				$record['pacientes_FECHANACPAC'] = format_date($record['pacientes_FECHANACPAC'],'d-m-Y');
+$record['ultima_modif'] = format_date($record['ultima_modif'],'d-m-Y');
+			}
+		}
 		$data = new stdClass;
 		$data->records = $records;
 		$data->record_count = $records_count;
@@ -91,11 +110,6 @@ class HistoriaclinicaController extends SecureController{
 			$this->set_page_error();
 		}
 		$page_title = $this->view->page_title = "Historiaclinica";
-		$this->view->report_filename = date('Y-m-d') . '-' . $page_title;
-		$this->view->report_title = $page_title;
-		$this->view->report_layout = "report_layout.php";
-		$this->view->report_paper_size = "A4";
-		$this->view->report_orientation = "portrait";
 		$this->render_view("historiaclinica/list.php", $data); //render the full page
 	}
 	/**
@@ -112,6 +126,7 @@ class HistoriaclinicaController extends SecureController{
 		$fields = array("historiaclinica.id", 
 			"historiaclinica.paciente", 
 			"historiaclinica.ultima_modif", 
+			"historiaclinica.usuario", 
 			"pacientes.idPaciente AS pacientes_idPaciente", 
 			"pacientes.NUMDOCPAC AS pacientes_NUMDOCPAC", 
 			"pacientes.FECHANACPAC AS pacientes_FECHANACPAC", 
@@ -129,16 +144,30 @@ class HistoriaclinicaController extends SecureController{
 			"pacientes.DIAGNOSTICO AS pacientes_DIAGNOSTICO", 
 			"pacientes.MEDICODERIV AS pacientes_MEDICODERIV", 
 			"pacientes.ESTADOPACIENTE AS pacientes_ESTADOPACIENTE", 
-			"historiaclinica.usuario");
+			"pacientes.date_deleted AS pacientes_date_deleted", 
+			"pacientes.is_deleted AS pacientes_is_deleted", 
+			"usuarios.idUSUARIO AS usuarios_idUSUARIO", 
+			"usuarios.NOMBRE AS usuarios_NOMBRE", 
+			"usuarios.CLAVE AS usuarios_CLAVE", 
+			"usuarios.USUARIO AS usuarios_USUARIO", 
+			"usuarios.EMAIL AS usuarios_EMAIL", 
+			"usuarios.user_role_id AS usuarios_user_role_id", 
+			"usuarios.profesional AS usuarios_profesional", 
+			"usuarios.paciente AS usuarios_paciente", 
+			"usuarios.date_deleted AS usuarios_date_deleted", 
+			"usuarios.is_deleted AS usuarios_is_deleted");
 		if($value){
 			$db->where($rec_id, urldecode($value)); //select record based on field name
 		}
 		else{
 			$db->where("historiaclinica.id", $rec_id);; //select record based on primary key
 		}
-		$db->join("pacientes", "historiaclinica.paciente = pacientes.idPaciente", "INNER ");  
+		$db->join("pacientes", "historiaclinica.paciente = pacientes.idPaciente", "INNER ");
+		$db->join("usuarios", "historiaclinica.usuario = usuarios.idUSUARIO", "INNER ");  
 		$record = $db->getOne($tablename, $fields );
 		if($record){
+			$record['ultima_modif'] = format_date($record['ultima_modif'],'d-m-Y');
+$record['pacientes_FECHANACPAC'] = format_date($record['pacientes_FECHANACPAC'],'d-m-Y');
 			$page_title = $this->view->page_title = "Ver";
 		$this->view->report_filename = date('Y-m-d') . '-' . $page_title;
 		$this->view->report_title = $page_title;

@@ -125,11 +125,11 @@ $show_pagination = $this->show_pagination;
                                                 </th>
                                                 <?php } ?>
                                                 <th class="td-sno">#</th>
+                                                <th  class="td-pacientes_NOMBAPEPAC"> Apellido y Nombre</th>
                                                 <th  class="td-pacientes_NUMDOCPAC"> N° de Documento</th>
                                                 <th  class="td-pacientes_FECHANACPAC"> Fecha de Nacimiento</th>
-                                                <th  class="td-pacientes_NOMBAPEPAC"> Nombre y Apellido</th>
                                                 <th  class="td-ultima_modif"> Ultima Modif</th>
-                                                <th  class="td-usuario"> Usuario</th>
+                                                <th  class="td-usuarios_NOMBRE"> Usuario</th>
                                                 <th class="td-btn"></th>
                                             </tr>
                                         </thead>
@@ -154,83 +154,11 @@ $show_pagination = $this->show_pagination;
                                                     </th>
                                                     <?php } ?>
                                                     <th class="td-sno"><?php echo $counter; ?></th>
-                                                    <td class="td-pacientes_NUMDOCPAC">
-                                                        <span <?php if($can_edit){ ?> data-value="<?php echo $data['pacientes_NUMDOCPAC']; ?>" 
-                                                            data-pk="<?php echo $data['id'] ?>" 
-                                                            data-url="<?php print_link("pacientes/editfield/" . urlencode($data['idPaciente'])); ?>" 
-                                                            data-name="NUMDOCPAC" 
-                                                            data-title="Escribir  N° de Documento" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="number" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['pacientes_NUMDOCPAC']; ?> 
-                                                        </span>
-                                                    </td>
-                                                    <td class="td-pacientes_FECHANACPAC">
-                                                        <span <?php if($can_edit){ ?> data-flatpickr="{ enableTime: false, minDate: '', maxDate: ''}" 
-                                                            data-value="<?php echo $data['pacientes_FECHANACPAC']; ?>" 
-                                                            data-pk="<?php echo $data['id'] ?>" 
-                                                            data-url="<?php print_link("pacientes/editfield/" . urlencode($data['idPaciente'])); ?>" 
-                                                            data-name="FECHANACPAC" 
-                                                            data-title="Escribir  Fecha de Nacimiento" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="flatdatetimepicker" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['pacientes_FECHANACPAC']; ?> 
-                                                        </span>
-                                                    </td>
-                                                    <td class="td-pacientes_NOMBAPEPAC">
-                                                        <span <?php if($can_edit){ ?> data-value="<?php echo $data['pacientes_NOMBAPEPAC']; ?>" 
-                                                            data-pk="<?php echo $data['id'] ?>" 
-                                                            data-url="<?php print_link("pacientes/editfield/" . urlencode($data['idPaciente'])); ?>" 
-                                                            data-name="NOMBAPEPAC" 
-                                                            data-title="Escribir  Apellido y Nombre" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="text" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['pacientes_NOMBAPEPAC']; ?> 
-                                                        </span>
-                                                    </td>
-                                                    <td class="td-ultima_modif">
-                                                        <span <?php if($can_edit){ ?> data-flatpickr="{ enableTime: false, minDate: '', maxDate: ''}" 
-                                                            data-value="<?php echo $data['ultima_modif']; ?>" 
-                                                            data-pk="<?php echo $data['id'] ?>" 
-                                                            data-url="<?php print_link("historiaclinica/editfield/" . urlencode($data['id'])); ?>" 
-                                                            data-name="ultima_modif" 
-                                                            data-title="Escribir  Ultima Modif" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="flatdatetimepicker" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['ultima_modif']; ?> 
-                                                        </span>
-                                                    </td>
-                                                    <td class="td-usuario">
-                                                        <span <?php if($can_edit){ ?> data-value="<?php echo $data['usuario']; ?>" 
-                                                            data-pk="<?php echo $data['id'] ?>" 
-                                                            data-url="<?php print_link("historiaclinica/editfield/" . urlencode($data['id'])); ?>" 
-                                                            data-name="usuario" 
-                                                            data-title="Escribir  Usuario" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="number" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['usuario']; ?> 
-                                                        </span>
-                                                    </td>
+                                                    <td class="td-pacientes_NOMBAPEPAC"> <?php echo $data['pacientes_NOMBAPEPAC']; ?></td>
+                                                    <td class="td-pacientes_NUMDOCPAC"> <?php echo $data['pacientes_NUMDOCPAC']; ?></td>
+                                                    <td class="td-pacientes_FECHANACPAC"> <?php echo $data['pacientes_FECHANACPAC']; ?></td>
+                                                    <td class="td-ultima_modif"> <?php echo $data['ultima_modif']; ?></td>
+                                                    <td class="td-usuarios_NOMBRE"> <?php echo $data['usuarios_NOMBRE']; ?></td>
                                                     <th class="td-btn">
                                                         <?php if($can_view){ ?>
                                                         <a class="btn btn-sm btn-success has-tooltip" title="Ver registro" href="<?php print_link("historiaclinica/view/$rec_id"); ?>">
@@ -282,59 +210,32 @@ $show_pagination = $this->show_pagination;
                                                         <i class="fa fa-times"></i> Eliminar seleccionado
                                                     </button>
                                                     <?php } ?>
-                                                    <div class="dropup export-btn-holder mx-1">
-                                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fa fa-save"></i> Exportar
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <?php $export_print_link = $this->set_current_page_link(array('format' => 'print')); ?>
-                                                            <a class="dropdown-item export-link-btn" data-format="print" href="<?php print_link($export_print_link); ?>" target="_blank">
-                                                                <img src="<?php print_link('assets/images/print.png') ?>" class="mr-2" /> PRINT
-                                                                </a>
-                                                                <?php $export_pdf_link = $this->set_current_page_link(array('format' => 'pdf')); ?>
-                                                                <a class="dropdown-item export-link-btn" data-format="pdf" href="<?php print_link($export_pdf_link); ?>" target="_blank">
-                                                                    <img src="<?php print_link('assets/images/pdf.png') ?>" class="mr-2" /> PDF
-                                                                    </a>
-                                                                    <?php $export_word_link = $this->set_current_page_link(array('format' => 'word')); ?>
-                                                                    <a class="dropdown-item export-link-btn" data-format="word" href="<?php print_link($export_word_link); ?>" target="_blank">
-                                                                        <img src="<?php print_link('assets/images/doc.png') ?>" class="mr-2" /> WORD
-                                                                        </a>
-                                                                        <?php $export_csv_link = $this->set_current_page_link(array('format' => 'csv')); ?>
-                                                                        <a class="dropdown-item export-link-btn" data-format="csv" href="<?php print_link($export_csv_link); ?>" target="_blank">
-                                                                            <img src="<?php print_link('assets/images/csv.png') ?>" class="mr-2" /> CSV
-                                                                            </a>
-                                                                            <?php $export_excel_link = $this->set_current_page_link(array('format' => 'excel')); ?>
-                                                                            <a class="dropdown-item export-link-btn" data-format="excel" href="<?php print_link($export_excel_link); ?>" target="_blank">
-                                                                                <img src="<?php print_link('assets/images/xsl.png') ?>" class="mr-2" /> EXCEL
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">   
-                                                                    <?php
-                                                                    if($show_pagination == true){
-                                                                    $pager = new Pagination($total_records, $record_count);
-                                                                    $pager->route = $this->route;
-                                                                    $pager->show_page_count = true;
-                                                                    $pager->show_record_count = true;
-                                                                    $pager->show_page_limit =true;
-                                                                    $pager->limit_count = $this->limit_count;
-                                                                    $pager->show_page_number_list = true;
-                                                                    $pager->pager_link_range=5;
-                                                                    $pager->render();
-                                                                    }
-                                                                    ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="col">   
+                                                <?php
+                                                if($show_pagination == true){
+                                                $pager = new Pagination($total_records, $record_count);
+                                                $pager->route = $this->route;
+                                                $pager->show_page_count = true;
+                                                $pager->show_record_count = true;
+                                                $pager->show_page_limit =true;
+                                                $pager->limit_count = $this->limit_count;
+                                                $pager->show_page_number_list = true;
+                                                $pager->pager_link_range=5;
+                                                $pager->render();
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
-                            </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

@@ -8,7 +8,7 @@ class ConfiguracionController extends SecureController{
 		parent::__construct();
 		$this->tablename = "configuracion";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**

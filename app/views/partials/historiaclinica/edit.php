@@ -19,6 +19,10 @@ $redirect_to = $this->redirect_to;
             <div class="row ">
                 <div class="col ">
                     <h4 class="record-title">Editar Historia Clinica</h4>
+                    <div class=""><?php 
+                        $_SESSION['idPaciente']=$page_id;
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,11 +60,6 @@ $redirect_to = $this->redirect_to;
                                 <li class="nav-item">
                                     <a class="nav-link " data-toggle="tab" href="#TabPage-2-Page5" role="tab" aria-selected="true">
                                         <i class="fa fa-suitcase "></i> ESTUDIOS
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " data-toggle="tab" href="#TabPage-2-Page6" role="tab" aria-selected="true">
-                                        <i class="fa fa-users "></i> ANTECEDENTES FAM.
                                     </a>
                                 </li>
                             </ul>
@@ -101,8 +100,6 @@ $redirect_to = $this->redirect_to;
                                         $this->render_page("estudios_solicitados/list?limit_count=20"); 
                                         ?>
                                     </div>
-                                </div>
-                                <div class="tab-pane  fade" id="TabPage-2-Page6" role="tabpanel">
                                 </div>
                             </div>
                         </div>

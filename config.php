@@ -103,3 +103,6 @@ define('USER_EMAIL',(isset($_SESSION[APP_ID.'user_data']) ? $_SESSION[APP_ID.'us
 define('USER_ROLE',(isset($_SESSION[APP_ID.'user_data']) ? $_SESSION[APP_ID.'user_data']['user_role_id'] : null ));
 
 define('codTratamiento',(isset($_SESSION['codTratamiento']) ? $_SESSION['codTratamiento'] : null ));
+define('ID_PACIENTE',(isset($_SESSION['idPaciente']) ? $_SESSION['idPaciente'] : null ));
+
+

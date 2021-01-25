@@ -4,7 +4,7 @@ class PasswordmanagerController extends BaseController{
 		parent::__construct();
 		$this->tablename = "usuarios";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	function index(){

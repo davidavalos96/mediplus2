@@ -171,37 +171,8 @@ $show_pagination = $this->show_pagination;
                                                         </span>
                                                     </td>
                                                     <td class="td-EMAIL"><a href="<?php print_link("mailto:$data[EMAIL]") ?>"><?php echo $data['EMAIL']; ?></a></td>
-                                                    <td class="td-user_role_id">
-                                                        <span <?php if($can_edit){ ?> data-source='<?php echo json_encode_quote(Menu :: $user_role_id); ?>' 
-                                                            data-value="<?php echo $data['user_role_id']; ?>" 
-                                                            data-pk="<?php echo $data['idUSUARIO'] ?>" 
-                                                            data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
-                                                            data-name="user_role_id" 
-                                                            data-title="Seleccione un valor" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="select" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['user_role_id']; ?> 
-                                                        </span>
-                                                    </td>
-                                                    <td class="td-profesional">
-                                                        <span <?php if($can_edit){ ?> data-value="<?php echo $data['profesional']; ?>" 
-                                                            data-pk="<?php echo $data['idUSUARIO'] ?>" 
-                                                            data-url="<?php print_link("usuarios/editfield/" . urlencode($data['idUSUARIO'])); ?>" 
-                                                            data-name="profesional" 
-                                                            data-title="Escribir  Profesional" 
-                                                            data-placement="left" 
-                                                            data-toggle="click" 
-                                                            data-type="number" 
-                                                            data-mode="popover" 
-                                                            data-showbuttons="left" 
-                                                            class="is-editable" <?php } ?>>
-                                                            <?php echo $data['profesional']; ?> 
-                                                        </span>
-                                                    </td>
+                                                    <td class="td-user_role_id"> <?php echo $data['user_role_id']; ?></td>
+                                                    <td class="td-profesional"> <?php echo $data['profesional']; ?></td>
                                                     <th class="td-btn">
                                                         <?php if($can_view){ ?>
                                                         <a class="btn btn-sm btn-success has-tooltip" title="Ver registro" href="<?php print_link("usuarios/view/$rec_id"); ?>">

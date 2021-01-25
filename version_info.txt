@@ -1,0 +1,4 @@
+Cambios en esta version.
+- En esta version se agrego el control de usuarios
+- Se corrigio el modulo de historias clinicas 
+- Se agrego el modulo de turnos por terapeuta. 

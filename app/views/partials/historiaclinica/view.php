@@ -93,6 +93,24 @@ $show_export_btn = $this->show_export_btn;
                                             </span>
                                         </td>
                                     </tr>
+                                    <tr  class="td-usuario">
+                                        <th class="title"> Usuario: </th>
+                                        <td class="value">
+                                            <span <?php if($can_edit){ ?> data-value="<?php echo $data['usuario']; ?>" 
+                                                data-pk="<?php echo $data['id'] ?>" 
+                                                data-url="<?php print_link("historiaclinica/editfield/" . urlencode($data['id'])); ?>" 
+                                                data-name="usuario" 
+                                                data-title="Escribir  Usuario" 
+                                                data-placement="left" 
+                                                data-toggle="click" 
+                                                data-type="number" 
+                                                data-mode="popover" 
+                                                data-showbuttons="left" 
+                                                class="is-editable" <?php } ?>>
+                                                <?php echo $data['usuario']; ?> 
+                                            </span>
+                                        </td>
+                                    </tr>
                                     <tr  class="td-pacientes_idPaciente">
                                         <th class="title"> Pacientes Idpaciente: </th>
                                         <td class="value"> <?php echo $data['pacientes_idPaciente']; ?></td>
@@ -161,23 +179,53 @@ $show_export_btn = $this->show_export_btn;
                                         <th class="title"> Pacientes Estadopaciente: </th>
                                         <td class="value"> <?php echo $data['pacientes_ESTADOPACIENTE']; ?></td>
                                     </tr>
-                                    <tr  class="td-usuario">
-                                        <th class="title"> Usuario: </th>
-                                        <td class="value">
-                                            <span <?php if($can_edit){ ?> data-value="<?php echo $data['usuario']; ?>" 
-                                                data-pk="<?php echo $data['id'] ?>" 
-                                                data-url="<?php print_link("historiaclinica/editfield/" . urlencode($data['id'])); ?>" 
-                                                data-name="usuario" 
-                                                data-title="Escribir  Usuario" 
-                                                data-placement="left" 
-                                                data-toggle="click" 
-                                                data-type="number" 
-                                                data-mode="popover" 
-                                                data-showbuttons="left" 
-                                                class="is-editable" <?php } ?>>
-                                                <?php echo $data['usuario']; ?> 
-                                            </span>
-                                        </td>
+                                    <tr  class="td-pacientes_date_deleted">
+                                        <th class="title"> Pacientes Date Deleted: </th>
+                                        <td class="value"> <?php echo $data['pacientes_date_deleted']; ?></td>
+                                    </tr>
+                                    <tr  class="td-pacientes_is_deleted">
+                                        <th class="title"> Pacientes Is Deleted: </th>
+                                        <td class="value"> <?php echo $data['pacientes_is_deleted']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_idUSUARIO">
+                                        <th class="title"> Usuarios Idusuario: </th>
+                                        <td class="value"> <?php echo $data['usuarios_idUSUARIO']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_NOMBRE">
+                                        <th class="title"> Usuarios Nombre: </th>
+                                        <td class="value"> <?php echo $data['usuarios_NOMBRE']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_CLAVE">
+                                        <th class="title"> Usuarios Clave: </th>
+                                        <td class="value"> <?php echo $data['usuarios_CLAVE']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_USUARIO">
+                                        <th class="title"> Usuarios Usuario: </th>
+                                        <td class="value"> <?php echo $data['usuarios_USUARIO']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_EMAIL">
+                                        <th class="title"> Usuarios Email: </th>
+                                        <td class="value"> <?php echo $data['usuarios_EMAIL']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_user_role_id">
+                                        <th class="title"> Usuarios User Role Id: </th>
+                                        <td class="value"> <?php echo $data['usuarios_user_role_id']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_profesional">
+                                        <th class="title"> Usuarios Profesional: </th>
+                                        <td class="value"> <?php echo $data['usuarios_profesional']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_paciente">
+                                        <th class="title"> Usuarios Paciente: </th>
+                                        <td class="value"> <?php echo $data['usuarios_paciente']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_date_deleted">
+                                        <th class="title"> Usuarios Date Deleted: </th>
+                                        <td class="value"> <?php echo $data['usuarios_date_deleted']; ?></td>
+                                    </tr>
+                                    <tr  class="td-usuarios_is_deleted">
+                                        <th class="title"> Usuarios Is Deleted: </th>
+                                        <td class="value"> <?php echo $data['usuarios_is_deleted']; ?></td>
                                     </tr>
                                 </tbody>
                                 <!-- Table Body End -->

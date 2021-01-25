@@ -37,12 +37,21 @@ $redirect_to = $this->redirect_to;
                                 <div class="form-group ">
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <label class="control-label" for="USUARIO">Usuario <span class="text-danger">*</span></label>
+                                            <label class="control-label" for="CLAVE">Clave <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-sm-8">
-                                            <div class="">
-                                                <input id="ctrl-USUARIO"  value="<?php  echo $data['USUARIO']; ?>" type="text" placeholder="Escribir  Usuario"  required="" name="USUARIO"  data-url="api/json/usuarios_USUARIO_value_exist/" data-loading-msg="Comprobando disponibilidad ..." data-available-msg="Disponible" data-unavailable-msg="No disponible" class="form-control  ctrl-check-duplicate" />
-                                                    <div class="check-status"></div> 
+                                            <div class="input-group">
+                                                <input id="ctrl-CLAVE"  value="<?php  echo $data['CLAVE']; ?>" type="password" placeholder="Escriba su clave de acceso" maxlength="255" minlength="4"  required="" name="CLAVE"  class="form-control  password password-strength" />
+                                                    <div class="input-group-append cursor-pointer btn-toggle-password">
+                                                        <span class="input-group-text"><i class="fa fa-eye"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="password-strength-msg">
+                                                    <small class="font-weight-bold">Debería contener</small>
+                                                    <small class="length chip">4 caracteres min</small>
+                                                    <small class="caps chip">Letra mayúscula</small>
+                                                    <small class="number chip">Número</small>
+                                                    <small class="special chip">Símbolo</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -50,29 +59,17 @@ $redirect_to = $this->redirect_to;
                                     <div class="form-group ">
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <label class="control-label" for="user_role_id">User Role Id <span class="text-danger">*</span></label>
+                                                <label class="control-label" for="confirm_password">Confirm Password <span class="text-danger">*</span></label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <div class="">
-                                                    <select required=""  id="ctrl-user_role_id" name="user_role_id"  placeholder="Seleccione un valor"    class="custom-select" >
-                                                        <option value="">Seleccione un valor</option>
-                                                        <?php
-                                                        $user_role_id_options = Menu :: $user_role_id;
-                                                        $field_value = $data['user_role_id'];
-                                                        if(!empty($user_role_id_options)){
-                                                        foreach($user_role_id_options as $option){
-                                                        $value = $option['value'];
-                                                        $label = $option['label'];
-                                                        $selected = ( $value == $field_value ? 'selected' : null );
-                                                        ?>
-                                                        <option <?php echo $selected ?> value="<?php echo $value ?>">
-                                                            <?php echo $label ?>
-                                                        </option>                                   
-                                                        <?php
-                                                        }
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                <div class="input-group">
+                                                    <input id="ctrl-CLAVE-confirm" data-match="#ctrl-CLAVE"  class="form-control password-confirm " type="password" name="confirm_password" required placeholder="Confirm Password" />
+                                                    <div class="input-group-append cursor-pointer btn-toggle-password">
+                                                        <span class="input-group-text"><i class="fa fa-eye"></i></span>
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Password does not match
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,11 +77,12 @@ $redirect_to = $this->redirect_to;
                                     <div class="form-group ">
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <label class="control-label" for="profesional">Profesional <span class="text-danger">*</span></label>
+                                                <label class="control-label" for="USUARIO">Usuario <span class="text-danger">*</span></label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="">
-                                                    <input id="ctrl-profesional"  value="<?php  echo $data['profesional']; ?>" type="number" placeholder="Escribir  Profesional" step="1"  required="" name="profesional"  class="form-control " />
+                                                    <input id="ctrl-USUARIO"  value="<?php  echo $data['USUARIO']; ?>" type="text" placeholder="Escribir  Usuario"  required="" name="USUARIO"  data-url="api/json/usuarios_USUARIO_value_exist/" data-loading-msg="Comprobando disponibilidad ..." data-available-msg="Disponible" data-unavailable-msg="No disponible" class="form-control  ctrl-check-duplicate" />
+                                                        <div class="check-status"></div> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,11 +90,12 @@ $redirect_to = $this->redirect_to;
                                         <div class="form-group ">
                                             <div class="row">
                                                 <div class="col-sm-4">
-                                                    <label class="control-label" for="paciente">Paciente <span class="text-danger">*</span></label>
+                                                    <label class="control-label" for="EMAIL">Email <span class="text-danger">*</span></label>
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="">
-                                                        <input id="ctrl-paciente"  value="<?php  echo $data['paciente']; ?>" type="number" placeholder="Escribir  Paciente" step="1"  required="" name="paciente"  class="form-control " />
+                                                        <input id="ctrl-EMAIL"  value="<?php  echo $data['EMAIL']; ?>" type="email" placeholder="Escribir  Email"  required="" name="EMAIL"  data-url="api/json/usuarios_EMAIL_value_exist/" data-loading-msg="Comprobando disponibilidad ..." data-available-msg="Disponible" data-unavailable-msg="No disponible" class="form-control  ctrl-check-duplicate" />
+                                                            <div class="check-status"></div> 
                                                         </div>
                                                     </div>
                                                 </div>

@@ -8,7 +8,7 @@ class Tipo_doc_pacienteController extends SecureController{
 		parent::__construct();
 		$this->tablename = "tipo_doc_paciente";
 		$this->soft_delete = true;
-		$this->delete_field_name = "is_deleted";
+		$this->delete_field_name =$this->tablename.".is_deleted"; 
 		$this->delete_field_value = "1";
 	}
 	/**

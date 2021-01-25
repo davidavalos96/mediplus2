@@ -33,15 +33,27 @@ $show_pagination = $this->show_pagination;
                     <h4 class="record-title">Evoluciones</h4>
                 </div>
                 <div class="col-sm-3 ">
-                    <?php if($can_add){ ?>
-                    <a  class="btn btn btn-primary my-1" href="<?php print_link("evoluciones/add") ?>">
-                        <i class="fa fa-plus"></i>                              
-                        Agregar nuevo 
-                    </a>
-                    <?php } ?>
+                    <div class="">
+                        <?php 
+                        if(USER_ROLE != "Terapeuta" || USER_ROLE != "Medico")
+                        {
+                        ?>
+                        <a  class="btn btn btn-primary my-1" href="<?php print_link("evoluciones/add"); ?>">
+                        <i class="fa fa-plus"></i>Agregar Nuevo </a>
+                        <?php
+                        }
+                        else{
+                        ?>
+                        <a  class="btn btn btn-primary my-1" href="<?php print_link("evoluciones/agregar_evolucion_terapeuta"); ?>">
+                        <i class="fa fa-plus"></i>Agregar Nuevo </a>
+                        <?php                    
+                        }
+                    ?></div>
                 </div>
                 <div class="col-sm-4 ">
                     <input autocomplete="off" data-page-id="<?php echo $page_element_id ?>" data-page="<?php print_link($current_page); ?>" value="<?php echo get_value('search'); ?>" class="form-control ajax-page-search" type="text" name="search"  placeholder="Buscar" />
+                        <div class=""><div></div>
+                        </div>
                     </div>
                     <div class="col-md-12 comp-grid">
                         <div class=""><?php 
